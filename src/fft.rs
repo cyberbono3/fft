@@ -19,15 +19,9 @@ fn fft_complex(x: &[Complex64]) -> Result<Vec<Complex64>, FftError> {
         return dft_complex(x);
     }
 
-    let mut x_even: Vec<Complex64> = Vec::with_capacity(x.len() / 2);
-    let mut x_odd: Vec<Complex64> = Vec::with_capacity(x.len() / 2);
-    for i in 0..N {
-        if i % 2 == 0 {
-            x_even.push(x[i]);
-        } else {
-            x_odd.push(x[i]);
-        }
-    }
+    let x_even: Vec<Complex64> = (0..N).step_by(2).map(|i| x[i]).collect();
+    let x_odd: Vec<Complex64> = (0..N).skip(1).step_by(2).map(|i| x[i]).collect();
+   
     let x_even_cmplx = fft_complex(&x_even)?;
     let x_odd_cmplx = fft_complex(&x_odd)?;
 
